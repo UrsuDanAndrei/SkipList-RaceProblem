@@ -1,0 +1,99 @@
+functia rlg:
+
+Functia primeste un nivel maxim si returneaza un nivel mai mic sau
+egal, a carui probabilitate scade exponential cu cat este mai mare.
+Scopul acestei functii este sa asigure o distributie cat mai uniforma
+in skiplist.
+
+clasa SkipListElement:
+
+Clasa contine un camp de tip T (trimis prin template) ce are rolul de
+a stoca informatia primita si un vector de pointeri la alte noduri.
+Pe pozitia 0 a acestui vector se gaseste chiar nodul urmator, iar pe
+urmatoarele poiztii se gasesc nodurile la care se poate sari in
+functie de nivel.
+
+clasa SkipList:
+
+Clasa defineste un skiplist. Nodurile head si tail sunt initializate
+cu minimul si respectiv maximul clasei T primite prin template.
+
+Metoda search_elem returneaza true daca nodul cu informatia x se
+gaseste in skiplist si false altfel. Se fac "jump-uri" pe orizontala
+atata timp cat informatia nodului cautat nu depaseste informatia
+nodului la care se sare (aceste "jump-uri" reduc semnificativ timpul
+de executie). Cand nu se mai poate sari se coboara un nivel in jos si
+se incearca din nou. Acest proces se repeta pana cand se ajunge la
+nivelul 0 si la adresa nodului cautat.
+
+Metoda delete_elem sterge un element din lista, facand conexiunile
+necesare intre elementele ramase pentru a pastra functionalitatea
+listei in continuare. Mai intai cauta nodul de sters folosind o metoda
+de tipul search_elem si daca se gaseste se realizeaza stergerea.
+
+Metoda insert_elem insereaza un element in skiplist. Prima oara cauta
+locul de inserare ca in metoda search_elem, retinand pe parcurs in
+vectorul cnt, la fiecare nivel, adresa nodului cu care poate fi
+realizata conexiunea in cazul in care elementul inserat atinge
+respectivul nivel.
+
+Metoda toArray returneaza skiplist-ul sub forma unui vector.
+
+clasa Player:
+
+Retine id-ul, punctele si pozitia unui jucator. Deoarece o sa fie data
+ ca template pentru un obiect din clasa SkipList, iar acolo ordonarea
+ este crescatoare, operatorii au fost definiti in consecinta pentru
+ pastrarea clasamentului in forma dorita de comanda print (ordonare 
+ descrescatoare dupa punctaj si crescatoare dupa id). In cadrul 
+ aceluiasi fisier s-a definit clasa std::numeric_limits<Player>
+ pentru a se putea accesa din clasa SkipList player-ul "minim" si 
+ "maxim".
+
+clasa Ranking:
+
+Clasa Ranking este responsabila de tinerea clasamentului. Jucatorii 
+sunt stocati intr-un skiplist si intr-un vector obisnuit pentru 
+usurinta implementarii. Vectorul posPrint retine pozitiile jucatorilor
+de la ultimul print, iar variabila firstPrint marcheaza daca s-a 
+realizat vreodata o astfel de comanda.
+
+Metoda race, primeste un vector cu timpii jucatorilor si simuleaza o 
+cursa. SkipListul sort este utilizat pentru a realiza clasamentul 
+intermediar corespunzand cursei respective. Deoarece sortarea in 
+skiplist folosind clasa Player ca template se face dupa punctaj 
+descrescator timpul este dat ca punctaj negativ. De asemenea id-ul si 
+pos-ul sunt date invers pentru ca al doilea criteriu de sortare sa fie
+pozitia in clasament, iar nu id-ul cum este default. In a doua etapa a
+metodei se atribui punctajele jucatorilor si pentru a actualiza 
+clasamentul acestia sunt scosi din skiplist si bagati cu noul punctaj.
+In cele din urma se actualizeaza pozitiile jucatorilor in clasament.
+
+Metoda print afiseaza clasamentul asa cu este solicitat de comanda
+print.
+
+sursa main.cpp:
+
+Se fac fisiere de input/output si se citesc pe rand comenzile, se 
+declara un obiect de tip Ranking. Se citeste primul caracter din 
+fiecare comanda. In cazul in care comanda identificata este print se 
+citesc restul caracterelor si se executa. Altfel se muta cursorul cu 
+un caracter in spate pentru a putea citi corect vectorul cu timpii de 
+terminare al cursei pentru fiecare player. Acest vector se paseaza ca 
+argument pentru metoda race a obiectului de tip Ranking. Programul se 
+sfarseste cand toate cele m + k comenzi au fost executate. 
+
+alte comentarii:
+
+SkipListElement retine un vector de adrese si nu doar adresa nodului 
+de pe nivelul superior pentru a minimiza cache misses-urile, idee 
+preluata de la "http://ticki.github.io/blog/skip-lists-done-right/".
+
+
+
+
+
+
+
+
+
