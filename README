@@ -88,12 +88,3 @@ alte comentarii:
 SkipListElement retine un vector de adrese si nu doar adresa nodului 
 de pe nivelul superior pentru a minimiza cache misses-urile, idee 
 preluata de la "http://ticki.github.io/blog/skip-lists-done-right/".
-
-
-
-
-
-
-
-
-
